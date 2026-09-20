@@ -3,14 +3,11 @@ module
 public import Mathlib.Analysis.RCLike.Basic
 public import Mathlib.Basic.Complex.Basic
 
-public import LeanBLAS.Util
-
 @[expose] public section
-
 
 namespace BLAS
 
-open Sorry RCLike
+open RCLike
 
 local notation "𝓚" => algebraMap ℝ _
 
