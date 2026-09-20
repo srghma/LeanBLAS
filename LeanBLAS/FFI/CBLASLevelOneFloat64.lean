@@ -1,4 +1,9 @@
-import LeanBLAS.FFI.FloatArray
+module
+
+public import LeanBLAS.FFI.FloatArray
+
+@[expose] public section
+
 
 namespace BLAS.CBLAS
 

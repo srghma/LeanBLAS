@@ -1,9 +1,14 @@
-import LeanBLAS.Spec.LevelOne
-import LeanBLAS.Spec.LevelTwo
-import LeanBLAS.Spec.LevelThree
-import LeanBLAS.CBLAS.LevelOne
-import LeanBLAS.CBLAS.LevelTwo
-import LeanBLAS.CBLAS.LevelThree
+module
+
+public import LeanBLAS.Spec.LevelOne
+public import LeanBLAS.Spec.LevelTwo
+public import LeanBLAS.Spec.LevelThree
+public import LeanBLAS.CBLAS.LevelOne
+public import LeanBLAS.CBLAS.LevelTwo
+public import LeanBLAS.CBLAS.LevelThree
+
+@[expose] public section
+
 
 open BLAS
 

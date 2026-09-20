@@ -1,7 +1,12 @@
-import Mathlib.Analysis.RCLike.Basic
-import Mathlib.Basic.Complex.Basic
+module
 
-import LeanBLAS.Util
+public import Mathlib.Analysis.RCLike.Basic
+public import Mathlib.Basic.Complex.Basic
+
+public import LeanBLAS.Util
+
+@[expose] public section
+
 
 namespace BLAS
 

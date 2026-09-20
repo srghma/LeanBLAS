@@ -1,5 +1,10 @@
-import LeanBLAS.Spec.LevelThree
-import LeanBLAS.FFI.CBLASLevelThreeFloat64
+module
+
+public import LeanBLAS.Spec.LevelThree
+public import LeanBLAS.FFI.CBLASLevelThreeFloat64
+
+@[expose] public section
+
 
 namespace BLAS.CBLAS
 

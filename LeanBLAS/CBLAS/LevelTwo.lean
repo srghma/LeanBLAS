@@ -1,8 +1,11 @@
-import LeanBLAS.FFI.CBLASLevelTwoFloat64
-import LeanBLAS.Spec.LevelTwo
+module
+
+public import LeanBLAS.FFI.CBLASLevelTwoFloat64
+public import LeanBLAS.Spec.LevelTwo
+
+@[expose] public section
 
 namespace BLAS.CBLAS
-
 
 instance : LevelTwoData Float64Array Float Float where
 

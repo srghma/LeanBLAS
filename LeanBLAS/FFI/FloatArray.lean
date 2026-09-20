@@ -1,3 +1,7 @@
+module
+
+@[expose] public section
+
 namespace BLAS
 
 set_option linter.unusedVariables false

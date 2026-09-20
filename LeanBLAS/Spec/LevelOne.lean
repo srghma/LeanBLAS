@@ -1,12 +1,17 @@
-import Mathlib.Analysis.SpecialFunctions.Sqrt
-import Mathlib.Algebra.Order.Algebra
-import Mathlib.Algebra.Order.BigOperators.Expect
-import Mathlib.Analysis.Normed.Group.Basic
-import Mathlib.Data.EReal.Inv
-import Mathlib.Analysis.Real.Sqrt
-import Mathlib.Tactic.ContinuousFunctionalCalculus
+module
 
-import LeanBLAS.Spec.Scalar
+public import Mathlib.Analysis.SpecialFunctions.Sqrt
+public import Mathlib.Algebra.Order.Algebra
+public import Mathlib.Algebra.Order.BigOperators.Expect
+public import Mathlib.Analysis.Normed.Group.Basic
+public import Mathlib.Data.EReal.Inv
+public import Mathlib.Analysis.Real.Sqrt
+public import Mathlib.Tactic.ContinuousFunctionalCalculus
+
+public import LeanBLAS.Spec.Scalar
+
+@[expose] public section
+
 
 namespace BLAS
 

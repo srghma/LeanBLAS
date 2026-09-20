@@ -1,4 +1,6 @@
+module
 
+@[expose] public section
 
 namespace BLAS
 

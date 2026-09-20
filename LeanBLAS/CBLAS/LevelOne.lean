@@ -1,7 +1,12 @@
 -- import LeanBLAS.CBLAS.LevelOneFloat32
 -- import LeanBLAS.CBLAS.LevelOneComplexFloat32
-import LeanBLAS.FFI.CBLASLevelOneFloat64
-import LeanBLAS.Spec.LevelOne
+module
+
+public import LeanBLAS.FFI.CBLASLevelOneFloat64
+public import LeanBLAS.Spec.LevelOne
+
+@[expose] public section
+
 
 namespace BLAS.CBLAS
 

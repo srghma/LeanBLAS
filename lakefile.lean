@@ -1,4 +1,3 @@
-
 import Lake
 
 open Lake DSL System Lean Elab
@@ -57,6 +56,7 @@ extern_lib libleanblasc pkg := do
 @[default_target]
 lean_lib LeanBLAS where
   roots := #[`LeanBLAS]
+  precompileModules := true
 
 lean_lib LeanBLAS.FFI where
   roots := #[`LeanBLAS.FFI]

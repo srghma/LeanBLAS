@@ -1,4 +1,8 @@
-import LeanBLAS.Spec.LevelOne
+module
+
+public import LeanBLAS.Spec.LevelOne
+
+@[expose] public section
 
 namespace BLAS
 
