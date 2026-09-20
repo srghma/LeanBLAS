@@ -8,6 +8,22 @@ The goal of the specification is to formalize mathematics of BLAS rather than wh
 
 ### Prerequisites
 
+#### Option A: Using Nix (Recommended)
+
+If you have [Nix](https://nixos.org/) with Flakes enabled, all dependencies (Lean 4 toolchain, OpenBLAS, pkg-config, headers, library paths) are configured automatically:
+
+```bash
+# Enter development shell
+nix develop
+
+# Or enable automatic loading with direnv
+direnv allow
+```
+
+Inside the Nix shell, you can directly run `lake build` and `lake test`.
+
+#### Option B: Manual Setup
+
 Ensure you have the development files for C BLAS installed.
 
 On Ubuntu, you can install them with:
@@ -27,6 +43,9 @@ Currently we do not know of an easy way to build on Windows.
 To build the main library, run:
 
 ```bash
+# With Nix:
+nix develop --command lake build
+# Or directly inside `nix develop`:
 lake build
 ```
 
@@ -35,6 +54,9 @@ lake build
 To execute the test suite, run:
 
 ```bash
+# With Nix:
+nix develop --command lake test
+# Or directly inside `nix develop`:
 lake test
 ```
 
@@ -63,7 +85,7 @@ package foo {
   moreLinkArgs := linkArgs
 }
 
-require leanblas from git "https://github.com/lecopivo/LeanBLAS" @ "v4.18.0"
+require leanblas from git "https://github.com/lecopivo/LeanBLAS" @ "v4.34.0"
 
 @[default_target]
 lean_lib Foo {

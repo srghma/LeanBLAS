@@ -1,5 +1,5 @@
 import Mathlib.Analysis.RCLike.Basic
-import Mathlib.Data.Complex.Basic
+import Mathlib.Basic.Complex.Basic
 
 import LeanBLAS.Util
 

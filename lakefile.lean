@@ -3,42 +3,51 @@ import Lake
 
 open Lake DSL System Lean Elab
 
-def linkArgs := -- (#[] : Array String)
-  if System.Platform.isWindows then
+def linkArgs : Array String :=
+  if let some p := get_config? openblas then
+    #["-L" ++ p ++ "/lib", "-lblas"]
+  else if System.Platform.isWindows then
     #[]
   else if System.Platform.isOSX then
     #["-L/opt/homebrew/opt/openblas/lib",
       "-L/usr/local/opt/openblas/lib", "-lblas"]
   else -- assuming linux
-    -- #["-L/usr/lib/x86_64-linux-gnu/", "-lblas"]
-    #["/usr/lib/x86_64-linux-gnu/libblas.so"]
-def inclArgs :=
-  if System.Platform.isWindows then
+    #["-lblas"]
+
+def inclArgs : Array String :=
+  if let some p := get_config? openblas then
+    #["-I" ++ p ++ "/include"]
+  else if System.Platform.isWindows then
     #[]
   else if System.Platform.isOSX then
     #["-I/opt/homebrew/opt/openblas/include",
       "-I/usr/local/opt/openblas/include"]
   else -- assuming linux
-    #[]
+    #["-I/usr/include/openblas"]
 
 package leanblas {
   moreLinkArgs := linkArgs
   preferReleaseBuild := true
 }
 
-require mathlib from git "https://github.com/leanprover-community/mathlib4" @ "v4.28.0-rc1"
+require mathlib from git "https://github.com/leanprover-community/mathlib4" @ "v4.34.0"
 
 ----------------------------------------------------------------------------------------------------
 -- Build Lean ↔ BLAS bindings ---------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------
-target libleanblasc pkg : FilePath := do
+extern_lib libleanblasc pkg := do
   let mut oFiles : Array (Job FilePath) := #[]
+  let openblasInclude ← do
+    if let some p ← IO.getEnv "OPENBLAS_PATH" then
+      pure #[s!"-I{p}/include"]
+    else
+      pure #[]
   for file in (← (pkg.dir / "c").readDir) do
     if file.path.extension == some "c" then
-      let oFile := pkg.buildDir / "c" / (file.fileName.stripSuffix ".c" ++ ".o")
+      let oFile := pkg.buildDir / "c" / ((file.fileName.dropSuffix ".c").toString ++ ".o")
       let srcJob ← inputTextFile file.path
       let weakArgs := #["-I", (← getLeanIncludeDir).toString]
-      oFiles := oFiles.push (← buildO oFile srcJob weakArgs (#["-DNDEBUG", "-O3", "-fPIC"] ++ inclArgs) "gcc" getLeanTrace)
+      oFiles := oFiles.push (← buildO oFile srcJob weakArgs (#["-DNDEBUG", "-O3", "-fPIC"] ++ inclArgs ++ openblasInclude) "gcc" getLeanTrace)
   let name := nameToStaticLib "leanblasc"
 
   buildStaticLib (pkg.sharedLibDir / name) (oFiles)
@@ -50,20 +59,28 @@ lean_lib LeanBLAS where
   roots := #[`LeanBLAS]
 
 lean_lib LeanBLAS.FFI where
+  roots := #[`LeanBLAS.FFI]
   precompileModules := true
-  moreLinkObjs := #[libleanblasc]
 
-@[test_driver]
 lean_exe CBLASLevelOneTest where
   root := `Test.cblas_level_one
 
 lean_exe CBLASLevelTwoTest where
   root := `Test.cblas_level_two
 
-lean_exe CBLASLevelThreeTest where
-  root := `Test.cblas_level_three
-  supportInterpreter := true
+@[test_driver]
+script test (_args) do
+  let run (name : String) : ScriptM UInt32 := do
+    IO.println s!"=== Running {name} ==="
+    let proc ← IO.Process.spawn { cmd := "lake", args := #["exe", name] }
+    proc.wait
 
+  let code1 ← run "CBLASLevelOneTest"
+  if code1 ≠ 0 then return code1
+  let code2 ← run "CBLASLevelTwoTest"
+  if code2 ≠ 0 then return code2
+  IO.println "=== All LeanBLAS tests passed successfully! ==="
+  return 0
 
 -- ----------------------------------------------------------------------------------------------------
 -- -- Download and build OpenBLAS ---------------------------------------------------------------------

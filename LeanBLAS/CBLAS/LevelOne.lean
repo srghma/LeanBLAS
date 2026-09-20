@@ -5,11 +5,11 @@ import LeanBLAS.Spec.LevelOne
 
 namespace BLAS.CBLAS
 
-open Sorry
-
 instance : LevelOneData Float64Array Float Float where
   size x := x.size
-  get x i := (cast sorry_proof x : FloatArray).uget i.toUSize sorry_proof
+  get x i :=
+    let arr := x.toFloatArray
+    if h : i < arr.size then arr[i] else 0.0
   dot N X offX incX Y offY incY := ddot N.toUSize X offX.toUSize incX.toUSize Y offY.toUSize incY.toUSize
   nrm2 N X offX incX := dnrm2 N.toUSize X offX.toUSize incX.toUSize
   asum N X offX incX := dasum N.toUSize X offX.toUSize incX.toUSize
